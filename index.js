@@ -2,13 +2,14 @@ const express = require('express')
 const bodyParser=require('body-parser')
 const cors=require('cors')
 const ObjectId=require('mongodb').ObjectId;
+require('dotenv').config()
 const port = 5000
 const app = express()
 
 app.use(bodyParser.json())
 app.use(cors())
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://saqeeb:saqeeb@cluster0.euyqv.mongodb.net/volunteer?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.euyqv.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true });
 client.connect(err => {
   const bookings = client.db("volunteer").collection("volunteers");
@@ -44,6 +45,6 @@ app.get('/', (req, res) => {
  res.send('hellow')
 })
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   
 })
